@@ -4,7 +4,7 @@
 // setup.js, widget.js, or backup.js from GitHub.
 // This is the ONLY script you ever need to update manually.
 
-const BASE_URL = "https://raw.githubusercontent.com/alcaseybsu/uninterested/main/scriptable";
+const BASE_URL = "https://raw.githubusercontent.com/alcaseybsu/uninterested-Public/main";
 
 const FILES = [
   { url: `${BASE_URL}/setup.js`,  name: "setup"  },
@@ -26,11 +26,15 @@ alert.addAction("Just backup");
 alert.addCancelAction("Cancel");
 
 const choice = await alert.present();
-if (choice === -1) return;
+if (choice === -1) Script.complete();
 
+// choice 0 = all three
+// choice 1 = just setup  → FILES[0]
+// choice 2 = just widget → FILES[1]
+// choice 3 = just backup → FILES[2]
 const toUpdate = choice === 0
   ? FILES
-  : [FILES[choice]]; // choices 1-3 map to FILES[0-2]
+  : [FILES[choice - 1]];
 
 let updated = [];
 let failed = [];
@@ -40,7 +44,7 @@ for (const file of toUpdate) {
     const req = new Request(file.url);
     const code = await req.loadString();
 
-    if (!code || code.includes("404") || code.length < 100) {
+    if (!code || code.length < 100) {
       failed.push(file.name);
       continue;
     }
@@ -60,3 +64,5 @@ result.message =
   (failed.length > 0 ? `\nFailed: ${failed.join(", ")}` : "");
 result.addAction("Done");
 await result.present();
+
+Script.complete();

@@ -744,13 +744,9 @@ async function checkFirstStatementPrompts(cards) {
       const alert = new Alert();
       alert.title = `${card.nickname} — First Statement`;
       alert.message =
-        "Your new card has been active for about a month.
-" +
-        "Has your first statement closed yet?
-
-" +
-        "If so, open Setup to add your closing
-" +
+        "Your new card has been active for about a month." +
+        "Has your first statement closed yet?" +
+        "If so, open Setup to add your closing" +
         "and due dates for accurate splits.";
       alert.addAction("Open Setup");
       alert.addAction("Not yet");
